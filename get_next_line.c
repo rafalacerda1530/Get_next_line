@@ -67,13 +67,12 @@ static int	output(char **str, char **line, ssize_t size)
 
 int	get_next_line(int fd, char **line)
 {
-	char		buf[BUFFER_SIZE + 1];
+	char		*buf;
 	int			byte_was_read;
 	static char	*reaminder;
 	char		*tmp;
 
-	if (fd < 0 || !line || BUFFER_SIZE <= 0)
-		return (-1);
+	buf = (char *)malloc(BUFFER_SIZE + 1);
 	byte_was_read = read (fd, buf, BUFFER_SIZE);
 	while (byte_was_read > 0)
 	{
@@ -90,5 +89,6 @@ int	get_next_line(int fd, char **line)
 			break ;
 		byte_was_read = read (fd, buf, BUFFER_SIZE);
 	}
+	free(buf);
 	return (output(&reaminder, line, byte_was_read));
 }

@@ -41,8 +41,9 @@ static int	appending(char **str, char **line)
 		*line = ft_strdup(*str);
 		if (str != NULL)
 		{
+			tmp = ft_strdup("");
 			free(*str);
-			*str = ft_strdup("");
+			*str = tmp;
 		}
 		return (0);
 	}
@@ -81,20 +82,3 @@ int	get_next_line(int fd, char **line)
 	return (appending(&reaminder, line));
 }
 
-int main(void)
-{
-  char  *line;
-  int   fd1;
-
-  fd1 = open("text.txt", O_RDONLY);
-
-
-	get_next_line(fd1, &line);
-	printf("%s\n", line);
-	free(line);
-
-	get_next_line(fd1, &line);
-	printf("%s\n", line);
-	free(line);
-
-}

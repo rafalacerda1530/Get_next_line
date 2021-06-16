@@ -40,7 +40,10 @@ static int	appending(char **str, char **line)
 	{
 		*line = ft_strdup(*str);
 		if (str != NULL)
+		{
 			free(*str);
+			*str = ft_strdup("");
+		}
 		return (0);
 	}
 	*line = ft_substr(*str, 0, i);
@@ -76,4 +79,22 @@ int	get_next_line(int fd, char **line)
 		byte_was_read = read (fd, buf, BUFFER_SIZE);
 	}
 	return (appending(&reaminder, line));
+}
+
+int main(void)
+{
+  char  *line;
+  int   fd1;
+
+  fd1 = open("text.txt", O_RDONLY);
+
+
+	get_next_line(fd1, &line);
+	printf("%s\n", line);
+	free(line);
+
+	get_next_line(fd1, &line);
+	printf("%s\n", line);
+	free(line);
+
 }

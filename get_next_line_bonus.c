@@ -12,7 +12,7 @@
 
 #include "get_next_line_bonus.h"
 
-char	*ft_strchr(const char *s, int c)
+static char	*ft_strchr(const char *s, int c)
 {
 	unsigned char	n_c;
 
@@ -40,7 +40,10 @@ static int	appending(char **str, char **line)
 	{
 		*line = ft_strdup(*str);
 		if (str != NULL)
+		{
 			free(*str);
+			*str = NULL;
+		}
 		return (0);
 	}
 	*line = ft_substr(*str, 0, i);
@@ -48,6 +51,18 @@ static int	appending(char **str, char **line)
 	free(*str);
 	*str = tmp;
 	return (1);
+}
+
+static int	output(char **str, char **line, ssize_t size)
+{
+	if (size < 0 || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	else if (size == 0 && *str == NULL)
+	{
+		*line = ft_strdup("");
+		return (0);
+	}
+	return (appending(str, line));
 }
 
 int	get_next_line(int fd, char **line)
@@ -75,5 +90,5 @@ int	get_next_line(int fd, char **line)
 			break ;
 		byte_was_read = read (fd, buf, BUFFER_SIZE);
 	}
-	return (appending(&reaminder[fd], line));
+	return (output(&reaminder[fd], line, byte_was_read));
 }

@@ -41,9 +41,8 @@ static int	appending(char **str, char **line)
 		*line = ft_strdup(*str);
 		if (str != NULL)
 		{
-			tmp = ft_strdup("");
 			free(*str);
-			*str = tmp;
+			*str = NULL;
 		}
 		return (0);
 	}
@@ -52,6 +51,18 @@ static int	appending(char **str, char **line)
 	free(*str);
 	*str = tmp;
 	return (1);
+}
+
+static int	output(char **str, char **line, ssize_t size)
+{
+	if (size < 0 || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	else if (size == 0 && *str == NULL)
+	{
+		*line = ft_strdup("");
+		return (0);
+	}
+	return (appending(str, line));
 }
 
 int	get_next_line(int fd, char **line)
@@ -79,6 +90,5 @@ int	get_next_line(int fd, char **line)
 			break ;
 		byte_was_read = read (fd, buf, BUFFER_SIZE);
 	}
-	return (appending(&reaminder, line));
+	return (output(&reaminder, line, byte_was_read));
 }
-
